@@ -12,7 +12,7 @@ torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 extra_compile_args = ['-std=c++17']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch']
-runtime_library_dirs = [os.path.join(openmm_dir, 'lib'), torch_dir]
+runtime_library_dirs = ["../../openmm/lib", "../../torch/lib"]
 
 # For Windows change the compiler flag to /std:c++17
 if platform.system() == 'Windows':
@@ -43,5 +43,5 @@ setup(name='openmmtorch',
       version=version,
       py_modules=['openmmtorch'],
       ext_modules=[extension],
-      install_requires=['openmm', 'torch']
+      install_requires=['openmm==8.2.1rc1', 'torch']
      )

@@ -12,7 +12,7 @@ torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 extra_compile_args = ['-std=c++17']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch']
-runtime_library_dirs = ["../../openmm/lib", "../../torch/lib"]
+runtime_library_dirs = ["$ORIGIN/lib"]
 
 # For Windows change the compiler flag to /std:c++17
 if platform.system() == 'Windows':
@@ -28,6 +28,7 @@ if platform.system() == 'Windows':
 if platform.system() == 'Darwin':
     extra_compile_args += ['-stdlib=libc++', '-mmacosx-version-min=10.13']
     extra_link_args += ['-stdlib=libc++', '-mmacosx-version-min=10.13']
+    runtime_library_dirs += ['@loader_path/lib']
 
 extension = Extension(name='_openmmtorch',
                       sources=['TorchPluginWrapper.cpp'],

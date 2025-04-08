@@ -1,2 +1,4 @@
 graft include
 graft lib
+prune tests
+prune cibuildwheel_support

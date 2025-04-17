@@ -1,4 +1,4 @@
-graft include
-graft lib
+graft openmmtorch/include
+graft openmmtorch/lib
 prune tests
 prune cibuildwheel_support

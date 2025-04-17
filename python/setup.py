@@ -9,10 +9,13 @@ nn_plugin_header_dir = '@NN_PLUGIN_HEADER_DIR@'
 nn_plugin_library_dir = '@NN_PLUGIN_LIBRARY_DIR@'
 torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 
+
 extra_compile_args = ['-std=c++17']
 extra_link_args = []
-libraries = ['OpenMM', 'OpenMMTorch']
-runtime_library_dirs = ["$ORIGIN/lib"]
+libraries = ['OpenMM', 'OpenMMTorch', "OpenMMTorchReference"]
+if os.environ.get("CUDA_HOME", None) is not None:
+    libraries += ["OpenMMTorchCUDA", "OpenMMTorchOpenCL"]
+runtime_library_dirs = ["$ORIGIN/lib", "$ORIGIN/lib/plugins", "$ORIGIN/../openmm/lib", "$ORIGIN/../openmm/lib/plugins", "$ORIGIN/../torch/lib"]
 
 # For Windows change the compiler flag to /std:c++17
 if platform.system() == 'Windows':
@@ -28,10 +31,10 @@ if platform.system() == 'Windows':
 if platform.system() == 'Darwin':
     extra_compile_args += ['-stdlib=libc++', '-mmacosx-version-min=10.13']
     extra_link_args += ['-stdlib=libc++', '-mmacosx-version-min=10.13']
-    runtime_library_dirs += ['@loader_path/lib']
+    runtime_library_dirs += ['@loader_path/lib', '@loader_path/openmm/lib', '@loader_path/torch/lib']
 
-extension = Extension(name='_openmmtorch',
-                      sources=['TorchPluginWrapper.cpp'],
+extension = Extension(name='openmmtorch._openmmtorch',
+                      sources=['openmmtorch/TorchPluginWrapper.cpp'],
                       libraries=libraries,
                       include_dirs=[os.path.join(openmm_dir, 'include'), nn_plugin_header_dir] + torch_include_dirs,
                       library_dirs=[os.path.join(openmm_dir, 'lib'), nn_plugin_library_dir, torch_dir],

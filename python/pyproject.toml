@@ -1,14 +1,12 @@
 [project]
-name = "openmm-torch"
+name = "openmmtorch"
 description = "Python wrapper for OpenMM (a C++ MD package)"
 authors = [{ name = "Peter Eastman", email = "peastman@stanford.edu" }]
 readme = "README.md"
 license = "PSF-2.0"
 requires-python = ">=3.8"
 dynamic = ["version", "dependencies"]
-classifiers = [
-  "Programming Language :: Python :: 3",
-]
+classifiers = ["Programming Language :: Python :: 3"]
 
 [project.urls]
 "Homepage" = "https://openmm.org"
@@ -16,10 +14,7 @@ classifiers = [
 "Download URL" = "https://openmm.org"
 
 [tool.setuptools.packages.find]
-where = ["."]
-
-[tool.setuptools_scm]
-root = ".."
+include = ["openmmtorch*"]
 
 # [tool.setuptools.exclude-package-data]
 # "*" = ["*.c", "*.cpp", "*.h", "*.cuh", "*.cu", ".gitignore"]
@@ -35,12 +30,22 @@ build-backend = "setuptools.build_meta"
 
 
 [tool.cibuildwheel]
-skip = ["cp38-*", "pp*", "*win32", "*armv7l", "*_i686", "*_ppc64le", "*_s390x", "*_universal2", "*-musllinux_*"]
+skip = [
+  "cp38-*",
+  "pp*",
+  "*win32",
+  "*armv7l",
+  "*_i686",
+  "*_ppc64le",
+  "*_s390x",
+  "*_universal2",
+  "*-musllinux_*",
+]
 # test-requires = ["pytest"]
 # test-command = "pytest {project}/python/tests"
 manylinux-x86_64-image = "manylinux_2_28"
 manylinux-aarch64-image = "manylinux_2_28"
-environment-pass = ["ACCELERATOR"]
+environment-pass = ["ACCELERATOR", "CUDA_HOME"]
 container-engine = "docker; create_args: --gpus all"
 
 [tool.cibuildwheel.windows]

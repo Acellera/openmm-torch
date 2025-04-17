@@ -1,5 +1,5 @@
 [project]
-name = "openmmtorch"
+name = "openmm-torch"
 description = "Python wrapper for OpenMM (a C++ MD package)"
 authors = [{ name = "Peter Eastman", email = "peastman@stanford.edu" }]
 readme = "README.md"
@@ -41,8 +41,8 @@ skip = [
   "*_universal2",
   "*-musllinux_*",
 ]
-# test-requires = ["pytest"]
-# test-command = "pytest {project}/python/tests"
+test-requires = ["pytest"]
+test-command = "pytest {project}/python/tests"
 manylinux-x86_64-image = "manylinux_2_28"
 manylinux-aarch64-image = "manylinux_2_28"
 environment-pass = ["ACCELERATOR", "CUDA_HOME"]

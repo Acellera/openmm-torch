@@ -10,7 +10,7 @@ nn_plugin_library_dir = '@NN_PLUGIN_LIBRARY_DIR@'
 torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 
 
-extra_compile_args = ['-std=c++17']
+extra_compile_args = ['-std=c++17', '-D_GLIBCXX_USE_CXX11_ABI=0']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch', "OpenMMTorchReference"]
 if os.environ.get("CUDA_HOME", None) is not None:

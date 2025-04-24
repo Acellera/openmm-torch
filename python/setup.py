@@ -14,7 +14,7 @@ extra_compile_args = ['-std=c++17']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch']
 libraries += ['c10', 'torch']
-if os.environ.get("CUDA_HOME", None) is not None:
+if os.environ.get("ACCELERATOR", "").startswith("cu"):
     libraries += ['torch_cuda']
 else:
     libraries += ['torch_cpu']

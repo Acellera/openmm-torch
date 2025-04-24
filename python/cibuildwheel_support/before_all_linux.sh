@@ -6,7 +6,6 @@ set -x
 # Install dependencies with yum
 dnf install -y zip opencl-headers ocl-icd tree
 
-CMAKE_FLAGS=" -DENABLE_CUDA=OFF"
 # Configure pip to use PyTorch extra-index-url for CPU
 mkdir -p $HOME/.config/pip
 echo "[global]

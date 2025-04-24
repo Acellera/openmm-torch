@@ -1,3 +1,8 @@
+#! /bin/bash
+
+set -e
+set -x
+
 # Install dependencies with pip
 pip install torch openmm==8.2.1rc1
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
@@ -40,4 +45,7 @@ cp build/python/setup.py python/
 cp build/python/openmmtorch.py python/openmmtorch/
 cp build/python/TorchPluginWrapper.cpp python/openmmtorch/
 cp -r install/include python/openmmtorch/
-cp -r install/lib python/openmmtorch/
+
+# Copy the libraries of openmm
+mkdir -p python/openmm/
+cp -r install/lib/ python/openmm/

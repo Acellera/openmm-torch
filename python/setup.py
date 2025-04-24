@@ -10,21 +10,19 @@ nn_plugin_library_dir = '@NN_PLUGIN_LIBRARY_DIR@'
 torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 
 
-extra_compile_args = ['-std=c++17', '-D_GLIBCXX_USE_CXX11_ABI=0']
+extra_compile_args = ['-std=c++17']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch']
-# if os.environ.get("CUDA_HOME", None) is not None:
-#     libraries += ["OpenMMTorchCUDA", "OpenMMTorchOpenCL"]
-runtime_library_dirs = ["$ORIGIN/lib", "$ORIGIN/../openmm/lib", "$ORIGIN/../torch/lib"]
+libraries += ['c10', 'torch']
+if os.environ.get("CUDA_HOME", None) is not None:
+    libraries += ['torch_cuda']
+else:
+    libraries += ['torch_cpu']
+runtime_library_dirs = ["$ORIGIN/../openmm/lib", "$ORIGIN/../torch/lib"]
 
 # For Windows change the compiler flag to /std:c++17
 if platform.system() == 'Windows':
     extra_compile_args = ['/std:c++17']
-    libraries += ['c10', 'torch']
-    if os.environ.get("CUDA_HOME", None) is not None:
-        libraries += ['torch_cuda']
-    else:
-        libraries += ['torch_cpu']
     runtime_library_dirs = None
 
 # setup extra compile and link arguments on Mac

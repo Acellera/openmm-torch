@@ -6,9 +6,32 @@ import pytest
 import torch as pt
 from tempfile import NamedTemporaryFile
 
+class Central(pt.nn.Module):
+    def forward(self, pos):
+        return pos.pow(2).sum()
+
+class Forces(pt.nn.Module):
+    def forward(self, pos):
+        return pos.pow(2).sum(), -2 * pos
+
+class Global(pt.nn.Module):
+    def forward(self, pos, k):
+        return k * pos.pow(2).sum()
+
+class Periodic(pt.nn.Module):
+    def forward(self, pos, box):
+        box = box.diagonal().unsqueeze(0)
+        pos = pos - (pos / box).floor() * box
+        return pos.pow(2).sum()
+
+pt.jit.script(Central()).save('central.pt')
+pt.jit.script(Forces()).save('forces.pt')
+pt.jit.script(Global()).save('global.pt')
+pt.jit.script(Periodic()).save('periodic.pt')
+
 @pytest.mark.parametrize('model_file,',
-                        ['../../tests/central.pt',
-                         '../../tests/forces.pt'])
+                        ['central.pt',
+                         'forces.pt'])
 def testConstructors(model_file):
     force = ot.TorchForce(model_file)
     model = pt.jit.load(model_file)
@@ -17,9 +40,9 @@ def testConstructors(model_file):
     force = ot.TorchForce(model)
 
 @pytest.mark.parametrize('model_file, output_forces, use_module_constructor',
-                        [('../../tests/central.pt', False, False,),
-                         ('../../tests/forces.pt', True, False),
-                         ('../../tests/forces.pt', True, True)])
+                        [('central.pt', False, False,),
+                         ('forces.pt', True, False),
+                         ('forces.pt', True, True)])
 @pytest.mark.parametrize('use_cv_force', [True, False])
 @pytest.mark.parametrize('platform', [mm.Platform.getPlatform(i).getName() for i in range(mm.Platform.getNumPlatforms())])
 def testForce(model_file, output_forces, use_module_constructor, use_cv_force, platform):
@@ -122,7 +145,7 @@ def testModuleArguments(deviceString, precision):
 
 def testProperties():
     """ Test that the properties are correctly set and retrieved """
-    force = ot.TorchForce('../../tests/central.pt')
+    force = ot.TorchForce('central.pt')
     force.setProperty('useCUDAGraphs', 'true')
     assert force.getProperties()['useCUDAGraphs'] == 'true'
     force.setProperty('useCUDAGraphs', 'false')

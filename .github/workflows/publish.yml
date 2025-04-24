@@ -1,0 +1,170 @@
+name: Build wheels and publish
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    name: Build wheels on ${{ matrix.os }}-${{ matrix.accelerator }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2019, macos-latest]
+        accelerator: [cpu, cu118, cu126, cu128]
+        exclude:
+          - os: ubuntu-24.04-arm
+            accelerator: cu118
+          - os: ubuntu-24.04-arm
+            accelerator: cu126
+          - os: ubuntu-24.04-arm
+            accelerator: cu128
+          - os: macos-latest
+            accelerator: cu118
+          - os: macos-latest
+            accelerator: cu126
+          - os: macos-latest
+            accelerator: cu128
+
+    steps:
+      - name: Free space of Github Runner (otherwise it will fail by running out of disk)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "/usr/local/.ghcup"
+          sudo rm -rf "/usr/local/julia1.9.2"
+          sudo rm -rf "/usr/local/lib/android"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel==2.23.0
+
+      - name: Activate MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        if: matrix.os == 'windows-2019'
+
+      - name: "Install dependencies with choco"
+        uses: crazy-max/ghaction-chocolatey@v3
+        if: matrix.os == 'windows-2019'
+        with:
+          args: install jom
+
+      - name: Build wheels
+        if: matrix.os != 'windows-2019'
+        shell: bash -l {0}
+        run: python -m cibuildwheel python/ --output-dir wheelhouse
+        env:
+          CIBW_BEFORE_ALL_LINUX: "python/cibuildwheel_support/before_all_linux.sh"
+          CIBW_BEFORE_BUILD_LINUX: "python/cibuildwheel_support/before_build_linux.sh"
+          CIBW_BEFORE_ALL_MACOS: "python/cibuildwheel_support/before_all_osx.sh"
+          CIBW_BEFORE_BUILD_MACOS: "python/cibuildwheel_support/before_build_linux.sh"
+          ACCELERATOR: ${{ matrix.accelerator }}
+          CIBW_BUILD: "cp310-*"
+          CUDA_HOME: "/usr/local/cuda"
+
+      - name: Build wheels
+        if: matrix.os == 'windows-2019'
+        shell: cmd # Use cmd on Windows to avoid bash environment taking priority over MSVC variables
+        run: python -m cibuildwheel python/ --output-dir wheelhouse
+        env:
+          CIBW_BEFORE_ALL_WINDOWS: "bash wrappers/python/cibuildwheel_support/prepare_build_environment_windows.sh"
+          DISTUTILS_USE_SDK: "1" # Windows requires this to use vc for building
+          ACCELERATOR: ${{ matrix.accelerator }}
+          CUDA_PATH: ${{ matrix.accelerator == 'cu118' && 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8' || 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6' }}
+          CUDA_HOME: ${{ matrix.accelerator == 'cu118' && 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8' || 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6' }}
+          CIBW_BUILD: "cp310-*"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.accelerator }}-cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
+
+  publish-to-accelera-pypi:
+    name: >-
+      Publish Python 🐍 distribution 📦 to Acellera PyPI
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions: # Needed for GCP authentication
+      contents: "read"
+      id-token: "write"
+    strategy:
+      fail-fast: false
+      matrix:
+        accelerator: [cpu, cu118, cu126, cu128]
+
+    steps:
+      - uses: actions/checkout@v4 # Needed for GCP authentication for some reason
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_PYPI_SERVICE_ACCOUNT }}
+
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "${{ matrix.accelerator }}-cibw-wheels*"
+          path: dist/
+          merge-multiple: true
+
+      - name: Publish distribution 📦 to Acellera PyPI
+        run: |
+          pip install build twine keyring keyrings.google-artifactregistry-auth
+          pip install -U packaging
+          twine upload --repository-url https://us-central1-python.pkg.dev/pypi-packages-455608/${{ matrix.accelerator }} dist/* --verbose --skip-existing
+
+  github-release:
+    name: >-
+      Sign the Python 🐍 distribution 📦 with Sigstore
+      and upload them to GitHub Release
+    needs:
+      - build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # IMPORTANT: mandatory for making GitHub Releases
+      id-token: write # IMPORTANT: mandatory for sigstore
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/
+          merge-multiple: true
+
+      - name: Sign the dists with Sigstore
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: >-
+            ./dist/*.whl
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create
+          "$GITHUB_REF_NAME"
+          --repo "$GITHUB_REPOSITORY"
+          --notes ""
+
+      - name: Upload artifact signatures to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        # Upload to GitHub Release using the `gh` CLI.
+        # `dist/` contains the built packages, and the
+        # sigstore-produced signatures and certificates.
+        run: >-
+          gh release upload
+          "$GITHUB_REF_NAME" dist/**
+          --repo "$GITHUB_REPOSITORY"

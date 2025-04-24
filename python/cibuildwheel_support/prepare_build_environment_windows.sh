@@ -1,20 +1,51 @@
-#! /bin/bash
+#!/bin/bash
 
 set -e
 set -x
+
+# Create pip directory if it doesn't exist
+mkdir -p "C:\ProgramData\pip"
+
+# Create pip.ini file with PyTorch CPU index
+echo "[global]
+extra-index-url = https://download.pytorch.org/whl/cpu
+                  https://us-central1-python.pkg.dev/pypi-packages-455608/cpu/simple" > "C:\ProgramData\pip\pip.ini"
+
 
 if [ "$ACCELERATOR" == "cu118" ]; then
     CUDA_ROOT="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8"
     curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_522.06_windows.exe
     ./cuda.exe -s nvcc_11.8 nvrtc_11.8 nvrtc_dev_11.8 cudart_11.8 cufft_11.8 cufft_dev_11.8 cuda_profiler_api_11.8
     rm cuda.exe
+
+    # Create pip.ini file with PyTorch CUDA 11.8 index
+    echo "[global]
+extra-index-url = https://download.pytorch.org/whl/cu118
+                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu118/simple" > "C:\ProgramData\pip\pip.ini"
 fi
 
-if [ "$ACCELERATOR" == "cu124" ]; then
-    CUDA_ROOT="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.4"
-    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_551.61_windows.exe
-    ./cuda.exe -s nvcc_12.4 nvrtc_12.4 nvrtc_dev_12.4 cudart_12.4 cufft_12.4 cufft_dev_12.4 cuda_profiler_api_12.4
+if [ "$ACCELERATOR" == "cu126" ]; then
+    CUDA_ROOT="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6"
+    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_551.61_windows.exe
+    ./cuda.exe -s nvcc_12.6 nvrtc_12.6 nvrtc_dev_12.6 cudart_12.6 cufft_12.6 cufft_dev_12.6 cuda_profiler_api_12.6
     rm cuda.exe
+
+    # Create pip.ini file with PyTorch CUDA 12.6 index
+    echo "[global]
+extra-index-url = https://download.pytorch.org/whl/cu126
+                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu126/simple" > "C:\ProgramData\pip\pip.ini"
+fi
+
+if [ "$ACCELERATOR" == "cu128" ]; then
+    CUDA_ROOT="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8"
+    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.8.0/local_installers/cuda_12.8.0_551.61_windows.exe
+    ./cuda.exe -s nvcc_12.8 nvrtc_12.8 nvrtc_dev_12.8 cudart_12.8 cufft_12.8 cufft_dev_12.8 cuda_profiler_api_12.8
+    rm cuda.exe
+
+    # Create pip.ini file with PyTorch CUDA 12.8 index
+    echo "[global]
+extra-index-url = https://download.pytorch.org/whl/cu128
+                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu128/simple" > "C:\ProgramData\pip\pip.ini"
 fi
 
 if [ "$ACCELERATOR" == "hip" ]; then

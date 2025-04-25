@@ -36,7 +36,7 @@ cmake .. \
     -DOPENCL_LIBRARY=/usr/lib64/libOpenCL.so.1 \
     ${CMAKE_FLAGS}
 
-# Build OpenMM
+# Build OpenMMTorch
 make -j4 install
 make -j4 PythonInstall
 

@@ -7,7 +7,7 @@ set -x
 pip install torch openmm==8.2.1rc1
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 
-if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu124" ] || [ "$ACCELERATOR" == "cu126" ]; then
+if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu124" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELERATOR" == "cu128" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[0]}.{y[1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([f'{y[0]}{y[1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
@@ -23,7 +23,7 @@ mkdir -p install
 cd build
 
 echo $CMAKE_FLAGS
-export LD_LIBRARY_PATH=/usr/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/lib/:/usr/local/cuda/targets/x86_64-linux/lib/:$LD_LIBRARY_PATH
 
 cmake .. \
     -DCMAKE_INSTALL_PREFIX=../install \

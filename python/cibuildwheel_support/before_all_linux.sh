@@ -6,6 +6,11 @@ set -x
 # Install dependencies with yum
 dnf install -y zip opencl-headers ocl-icd tree
 
+# Check if we are running on aarch64
+if [ "$(uname -m)" == "aarch64" ]; then
+    dnf install -y gfortran-aarch64-linux-gnu
+fi
+
 # Configure pip to use PyTorch extra-index-url for CPU
 mkdir -p $HOME/.config/pip
 echo "[global]

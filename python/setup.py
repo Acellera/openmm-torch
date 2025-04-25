@@ -12,8 +12,7 @@ torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 
 extra_compile_args = ['-std=c++17']
 extra_link_args = []
-libraries = ['OpenMM', 'OpenMMTorch']
-libraries += ['c10', 'torch']
+libraries = ['OpenMM', 'OpenMMTorch', 'c10', 'torch']
 if os.environ.get("ACCELERATOR", "").startswith("cu"):
     libraries += ['torch_cuda']
 else:

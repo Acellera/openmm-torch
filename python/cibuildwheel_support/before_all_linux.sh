@@ -8,7 +8,7 @@ dnf install -y zip opencl-headers ocl-icd tree
 
 # Check if we are running on aarch64
 if [ "$(uname -m)" == "aarch64" ]; then
-    dnf install -y gfortran-aarch64-linux-gnu
+    dnf install -y gcc-gfortran
 fi
 
 # Configure pip to use PyTorch extra-index-url for CPU

@@ -29,6 +29,9 @@ OPENCL_PATH="$(pwd)/OpenCL-SDK-v2024.10.24-Win-x64"
 cmake .. -G "NMake Makefiles JOM" \
     -DCMAKE_INSTALL_PREFIX=../install \
     -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_PREFIX_PATH=${SITE_PACKAGES} \
+    -DCUDA_DRIVER_LIBRARY_PATH=${SITE_PACKAGES}/lib/ \
+    -DUSE_SYSTEM_NVTX=1 \
     -DCMAKE_CXX_COMPILER=cl.exe \
     -DCMAKE_C_COMPILER=cl.exe \
     -DOPENMM_DIR=${SITE_PACKAGES}/openmm \

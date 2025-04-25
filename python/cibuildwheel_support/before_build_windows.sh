@@ -10,11 +10,11 @@ SITE_PACKAGES="$PYTHONPREFIX/Lib/site-packages/"
 
 
 if [ "$ACCELERATOR" == "cu118" ]; then
-    CUDA_HOME="C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v11.8"
+    CUDA_HOME="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8"
 elif [ "$ACCELERATOR" == "cu126" ]; then
-    CUDA_HOME="C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6"
+    CUDA_HOME="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6"
 elif [ "$ACCELERATOR" == "cu128" ]; then
-    CUDA_HOME="C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.8"
+    CUDA_HOME="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8"
 fi
 CUDA_PATH=$CUDA_HOME
 
@@ -25,7 +25,7 @@ if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELER
     CMAKE_FLAGS="    -DTORCH_CUDA_ARCH_LIST=${ARCH_LIST}"
     CMAKE_FLAGS+="    -DCMAKE_CUDA_ARCHITECTURES=${ARCH_LIST_FMT}"
     CMAKE_FLAGS+="    -DCUDA_TOOLKIT_ROOT_DIR=\"${CUDA_HOME}\""
-    CMAKE_FLAGS+="    -DCMAKE_CUDA_COMPILER=\"${CUDA_HOME}\\bin\\nvcc\""
+    CMAKE_FLAGS+="    -DCMAKE_CUDA_COMPILER=\"${CUDA_HOME}/bin/nvcc\""
 fi
 
 

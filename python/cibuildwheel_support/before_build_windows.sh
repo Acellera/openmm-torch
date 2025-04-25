@@ -5,7 +5,8 @@ set -x
 
 # Install dependencies with pip
 pip install torch openmm==8.2.1rc1
-SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
+PYTHONPREFIX=$(python -c 'import site; print(site.getsitepackages()[0])')
+SITE_PACKAGES="$PYTHONPREFIX/lib/site-packages/"
 
 if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELERATOR" == "cu128" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
@@ -30,11 +31,11 @@ cmake .. -G "NMake Makefiles JOM" \
     -DCMAKE_INSTALL_PREFIX=../install \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_PREFIX_PATH=${SITE_PACKAGES} \
-    -DCUDA_DRIVER_LIBRARY_PATH=${SITE_PACKAGES}/lib/ \
+    -DCUDA_DRIVER_LIBRARY_PATH=${PYTHONPREFIX}/Library/lib/ \
     -DUSE_SYSTEM_NVTX=1 \
     -DCMAKE_CXX_COMPILER=cl.exe \
     -DCMAKE_C_COMPILER=cl.exe \
-    -DOPENMM_DIR=${SITE_PACKAGES}/openmm \
+    -DOPENMM_DIR=${PYTHONPREFIX}/Library \
     -DPYTORCH_DIR=${SITE_PACKAGES}/torch \
     -DTorch_DIR=${SITE_PACKAGES}/torch/share/cmake/Torch \
     -DNN_BUILD_OPENCL_LIB=ON \

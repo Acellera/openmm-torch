@@ -113,7 +113,7 @@ def testModuleArguments(deviceString, precision):
             assert pt.allclose(positions, self.positions)
             return pt.sum(positions)
 
-    with NamedTemporaryFile() as fd:
+    with NamedTemporaryFile(delete=False) as fd:
 
         numParticles = 10
         system = mm.System()

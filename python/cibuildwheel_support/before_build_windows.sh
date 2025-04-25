@@ -18,6 +18,8 @@ if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELER
     CMAKE_FLAGS+="    -DCMAKE_CUDA_COMPILER=${CUDA_HOME}/bin/nvcc"
 fi
 
+OPENCL_PATH="$(pwd)/OpenCL-SDK-v2024.10.24-Win-x64"
+
 # Configure build with Cmake
 mkdir -p build
 mkdir -p install
@@ -25,7 +27,6 @@ cd build
 
 echo $CMAKE_FLAGS
 export LD_LIBRARY_PATH=/usr/lib/:/usr/local/cuda/targets/x86_64-linux/lib/:$LD_LIBRARY_PATH
-OPENCL_PATH="$(pwd)/OpenCL-SDK-v2024.10.24-Win-x64"
 
 cmake .. -G "NMake Makefiles JOM" \
     -DCMAKE_INSTALL_PREFIX=../install \

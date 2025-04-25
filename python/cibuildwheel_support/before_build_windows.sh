@@ -35,7 +35,7 @@ cmake .. -G "NMake Makefiles JOM" \
     -DUSE_SYSTEM_NVTX=1 \
     -DCMAKE_CXX_COMPILER=cl.exe \
     -DCMAKE_C_COMPILER=cl.exe \
-    -DOPENMM_DIR=${PYTHONPREFIX}/Library \
+    -DOPENMM_DIR=${SITE_PACKAGES}/openmm \
     -DPYTORCH_DIR=${SITE_PACKAGES}/torch \
     -DTorch_DIR=${SITE_PACKAGES}/torch/share/cmake/Torch \
     -DNN_BUILD_OPENCL_LIB=ON \

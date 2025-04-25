@@ -74,8 +74,6 @@ jobs:
         env:
           DISTUTILS_USE_SDK: "1" # Windows requires this to use vc for building
           ACCELERATOR: ${{ matrix.accelerator }}
-          CUDA_PATH: ${{ matrix.accelerator == 'cu118' && 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8' || 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6' }}
-          CUDA_HOME: ${{ matrix.accelerator == 'cu118' && 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8' || 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6' }}
           CIBW_BUILD: "cp310-*"
 
       - uses: actions/upload-artifact@v4

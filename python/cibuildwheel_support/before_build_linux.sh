@@ -23,6 +23,7 @@ mkdir -p install
 cd build
 
 echo $CMAKE_FLAGS
+export LD_LIBRARY_PATH=/usr/lib/:$LD_LIBRARY_PATH
 
 cmake .. \
     -DCMAKE_INSTALL_PREFIX=../install \

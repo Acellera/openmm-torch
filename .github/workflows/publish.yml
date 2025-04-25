@@ -12,16 +12,20 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-2019, macos-latest]
-        accelerator: [cpu, cu118, cu126, cu128]
+        accelerator: [cpu, cu118, cu124, cu126, cu128]
         exclude:
           - os: ubuntu-24.04-arm
             accelerator: cu118
+          - os: ubuntu-24.04-arm
+            accelerator: cu124
           - os: ubuntu-24.04-arm
             accelerator: cu126
           - os: ubuntu-24.04-arm
             accelerator: cu128
           - os: macos-latest
             accelerator: cu118
+          - os: macos-latest
+            accelerator: cu124
           - os: macos-latest
             accelerator: cu126
           - os: macos-latest
@@ -63,10 +67,6 @@ jobs:
         shell: bash -l {0}
         run: python -m cibuildwheel python/ --output-dir wheelhouse
         env:
-          CIBW_BEFORE_ALL_LINUX: "python/cibuildwheel_support/before_all_linux.sh"
-          CIBW_BEFORE_BUILD_LINUX: "python/cibuildwheel_support/before_build_linux.sh"
-          CIBW_BEFORE_ALL_MACOS: "python/cibuildwheel_support/before_all_osx.sh"
-          CIBW_BEFORE_BUILD_MACOS: "python/cibuildwheel_support/before_build_linux.sh"
           ACCELERATOR: ${{ matrix.accelerator }}
           CIBW_BUILD: "cp310-*"
           CUDA_HOME: "/usr/local/cuda"
@@ -76,7 +76,6 @@ jobs:
         shell: cmd # Use cmd on Windows to avoid bash environment taking priority over MSVC variables
         run: python -m cibuildwheel python/ --output-dir wheelhouse
         env:
-          CIBW_BEFORE_ALL_WINDOWS: "bash python/cibuildwheel_support/prepare_build_environment_windows.sh"
           DISTUTILS_USE_SDK: "1" # Windows requires this to use vc for building
           ACCELERATOR: ${{ matrix.accelerator }}
           CUDA_PATH: ${{ matrix.accelerator == 'cu118' && 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8' || 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6' }}
@@ -100,7 +99,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        accelerator: [cpu, cu118, cu126, cu128]
+        accelerator: [cpu, cu118, cu124, cu126, cu128]
 
     steps:
       - uses: actions/checkout@v4 # Needed for GCP authentication for some reason

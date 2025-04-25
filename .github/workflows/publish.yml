@@ -12,20 +12,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-2019, macos-latest]
-        accelerator: [cpu, cu118, cu124, cu126, cu128]
+        accelerator: [cpu, cu118, cu126, cu128]
         exclude:
           - os: ubuntu-24.04-arm
             accelerator: cu118
-          - os: ubuntu-24.04-arm
-            accelerator: cu124
           - os: ubuntu-24.04-arm
             accelerator: cu126
           - os: ubuntu-24.04-arm
             accelerator: cu128
           - os: macos-latest
             accelerator: cu118
-          - os: macos-latest
-            accelerator: cu124
           - os: macos-latest
             accelerator: cu126
           - os: macos-latest
@@ -99,7 +95,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        accelerator: [cpu, cu118, cu124, cu126, cu128]
+        accelerator: [cpu, cu118, cu126, cu128]
 
     steps:
       - uses: actions/checkout@v4 # Needed for GCP authentication for some reason

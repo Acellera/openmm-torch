@@ -25,7 +25,7 @@ python_classes = "Test"
 python_functions = "test*"
 
 [build-system]
-requires = ["setuptools>=78", "setuptools-scm>=8", "torch>=2.5", "numpy"]
+requires = ["setuptools>=78", "setuptools-scm>=8", "numpy", "cython"]
 build-backend = "setuptools.build_meta"
 
 

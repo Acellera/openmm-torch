@@ -75,6 +75,7 @@ jobs:
           DISTUTILS_USE_SDK: "1" # Windows requires this to use vc for building
           ACCELERATOR: ${{ matrix.accelerator }}
           CIBW_BUILD: "cp310-*"
+          CIBW_BUILD_VERBOSITY_WINDOWS: "1"
 
       - uses: actions/upload-artifact@v4
         with:

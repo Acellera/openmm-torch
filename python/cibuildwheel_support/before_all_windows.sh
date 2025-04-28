@@ -54,7 +54,9 @@ elif [ "$ACCELERATOR" == "hip" ]; then
     rm HIP.exe
 fi
 
-ls -lh /d/cuda/bin/
+ls -lh /d/cuda
+ls -lh D:\\cuda
+ls -ls D:\\cuda\\bin
 
 # Download and extract OpenCL
 curl --netrc-optional -L -nv -o OpenCL-SDK.zip https://github.com/KhronosGroup/OpenCL-SDK/releases/download/v2024.10.24/OpenCL-SDK-v2024.10.24-Win-x64.zip

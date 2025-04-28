@@ -19,6 +19,8 @@ if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELER
     CMAKE_FLAGS+=" -DCUDA_TOOLKIT_ROOT_DIR=/d/cuda"
     CMAKE_FLAGS+=" -DCUDA_NVCC_EXECUTABLE=/d/cuda/bin/nvcc.exe"
     CMAKE_FLAGS+=" -DCMAKE_CUDA_COMPILER=/d/cuda/bin/nvcc.exe"
+
+    export CUDA_PATH="/d/cuda"
 fi
 
 

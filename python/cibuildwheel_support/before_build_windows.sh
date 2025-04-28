@@ -23,13 +23,13 @@ if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELER
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
 
-    # Escape spaces in paths
-    CUDA_HOME_ESC=$(echo "${CUDA_HOME}" | sed 's/ /\\ /g')
+    # Convert to Windows path style
+    CUDA_HOME_WIN=$(echo "$CUDA_HOME" | sed 's/\//\\/g')
 
     CMAKE_FLAGS="-DTORCH_CUDA_ARCH_LIST=${ARCH_LIST}"
     CMAKE_FLAGS+=" -DCMAKE_CUDA_ARCHITECTURES=${ARCH_LIST_FMT}"
-    CMAKE_FLAGS+=" -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME_ESC}"
-    CMAKE_FLAGS+=" -DCMAKE_CUDA_COMPILER=${CUDA_HOME_ESC}/bin/nvcc.exe"
+    CMAKE_FLAGS+=" -DCUDA_TOOLKIT_ROOT_DIR=\"${CUDA_HOME_WIN}\""
+    CMAKE_FLAGS+=" -DCMAKE_CUDA_COMPILER=\"${CUDA_HOME_WIN}\\bin\\nvcc.exe\""
 fi
 
 

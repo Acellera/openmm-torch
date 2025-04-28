@@ -50,7 +50,7 @@ environment-pass = ["ACCELERATOR", "CUDA_HOME"]
 
 [tool.cibuildwheel.windows]
 before-all = "bash {project}/python/cibuildwheel_support/before_all_windows.sh"
-before-build = "python/cibuildwheel_support/before_build_windows.bat"
+before-build = "bash {project}/python/cibuildwheel_support/before_build_windows.sh"
 test-command = "pytest {project}\\python\\tests --ignore={project}\\python\\tests\\TestInteroperability.py"
 
 [tool.cibuildwheel.linux]

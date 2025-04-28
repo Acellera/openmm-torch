@@ -14,7 +14,7 @@ extra_compile_args = ['-std=c++17']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch', 'c10', 'torch']
 if os.environ.get("ACCELERATOR", "").startswith("cu"):
-    libraries += ['torch_cuda']
+    libraries += ['torch_cuda', 'c10_cuda']
 else:
     libraries += ['torch_cpu']
 runtime_library_dirs = ["$ORIGIN/../openmm/lib", "$ORIGIN/../torch/lib"]

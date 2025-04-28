@@ -18,7 +18,7 @@ if [ "$ACCELERATOR" == "cu118" ]; then
     ./cuda.exe -s nvcc_11.8 nvrtc_11.8 nvrtc_dev_11.8 cudart_11.8 cufft_11.8 cufft_dev_11.8 cuda_profiler_api_11.8
     rm cuda.exe
     # Move CUDA folder to a path without spaces
-    cmd.exe /c "move \"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v11.8\" D:\\cuda"
+    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8" /d/cuda
 
     # Create pip.ini file with PyTorch CUDA 11.8 index
     echo "[global]
@@ -30,7 +30,7 @@ elif [ "$ACCELERATOR" == "cu126" ]; then
     ./cuda.exe -s nvcc_12.6 nvrtc_12.6 nvrtc_dev_12.6 cudart_12.6 cufft_12.6 cufft_dev_12.6 cuda_profiler_api_12.6
     rm cuda.exe
     # Move CUDA folder to a path without spaces
-    cmd.exe /c "move \"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\" D:\\cuda"
+    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6" /d/cuda
 
     # Create pip.ini file with PyTorch CUDA 12.6 index
     echo "[global]
@@ -42,7 +42,7 @@ elif [ "$ACCELERATOR" == "cu128" ]; then
     ./cuda.exe -s nvcc_12.8 nvrtc_12.8 nvrtc_dev_12.8 cudart_12.8 cufft_12.8 cufft_dev_12.8 cuda_profiler_api_12.8
     rm cuda.exe
     # Move CUDA folder to a path without spaces
-    cmd.exe /c "move \"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.8\" D:\\cuda"
+    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8" /d/cuda
 
     # Create pip.ini file with PyTorch CUDA 12.8 index
     echo "[global]
@@ -54,8 +54,8 @@ elif [ "$ACCELERATOR" == "hip" ]; then
     rm HIP.exe
 fi
 
-ls -lh D:\\cuda
-ls -lh D:\\cuda\\bin
+ls -lh /d/cuda
+ls -lh /d/cuda/bin
 
 # Download and extract OpenCL
 curl --netrc-optional -L -nv -o OpenCL-SDK.zip https://github.com/KhronosGroup/OpenCL-SDK/releases/download/v2024.10.24/OpenCL-SDK-v2024.10.24-Win-x64.zip

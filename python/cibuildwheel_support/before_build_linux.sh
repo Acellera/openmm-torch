@@ -31,6 +31,12 @@ cd build
 echo $CMAKE_FLAGS
 export LD_LIBRARY_PATH=/usr/lib/:/usr/local/cuda/targets/x86_64-linux/lib/:$LD_LIBRARY_PATH
 
+# Check if we are running on aarch64
+if [ "$(uname -m)" == "aarch64" ]; then
+    export LD_LIBRARY_PATH=/usr/lib64/:$LD_LIBRARY_PATH
+    ls -lh /usr/lib64/
+fi
+
 cmake .. \
     -DCMAKE_INSTALL_PREFIX=../install \
     -DCMAKE_BUILD_TYPE=Release \

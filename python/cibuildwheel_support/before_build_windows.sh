@@ -36,7 +36,7 @@ cmake .. -G "NMake Makefiles JOM" \
     -DCMAKE_INSTALL_PREFIX=../install \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_PREFIX_PATH=${SITE_PACKAGES} \
-    -DCUDA_DRIVER_LIBRARY_PATH=${PYTHONPREFIX}/Library/lib/ \
+    -DCUDA_DRIVER_LIBRARY_PATH=/d/cuda/lib/ \
     -DUSE_SYSTEM_NVTX=1 \
     -DCMAKE_CXX_COMPILER=cl.exe \
     -DCMAKE_C_COMPILER=cl.exe \

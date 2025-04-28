@@ -9,28 +9,15 @@ PYTHONPREFIX=$(python -c 'import site; print(site.getsitepackages()[0])')
 SITE_PACKAGES="$PYTHONPREFIX/Lib/site-packages/"
 
 
-if [ "$ACCELERATOR" == "cu118" ]; then
-    CUDA_HOME="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8"
-elif [ "$ACCELERATOR" == "cu126" ]; then
-    CUDA_HOME="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6"
-elif [ "$ACCELERATOR" == "cu128" ]; then
-    CUDA_HOME="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8"
-fi
-CUDA_PATH=$CUDA_HOME
-
 if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELERATOR" == "cu128" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
 
-    # Format paths for CMake
-    CUDA_PATH_CMAKE="${CUDA_HOME//\\/\\\\}"  # Double escape backslashes
-    NVCC_PATH_CMAKE="${CUDA_HOME//\\/\\\\}\\\\bin\\\\nvcc.exe"
-
     CMAKE_FLAGS="-DTORCH_CUDA_ARCH_LIST=${ARCH_LIST}"
     CMAKE_FLAGS+=" -DCMAKE_CUDA_ARCHITECTURES=${ARCH_LIST_FMT}"
-    CMAKE_FLAGS+=" \"-DCUDA_TOOLKIT_ROOT_DIR=${CUDA_PATH_CMAKE}\""
-    CMAKE_FLAGS+=" \"-DCMAKE_CUDA_COMPILER=${NVCC_PATH_CMAKE}\""
+    CMAKE_FLAGS+=" -DCUDA_TOOLKIT_ROOT_DIR=/d/cuda"
+    CMAKE_FLAGS+=" -DCMAKE_CUDA_COMPILER=/d/cuda/bin/nvcc.exe"
 fi
 
 

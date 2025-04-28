@@ -18,7 +18,7 @@ if [ "$ACCELERATOR" == "cu118" ]; then
     ./cuda.exe -s nvcc_11.8 nvrtc_11.8 nvrtc_dev_11.8 cudart_11.8 cufft_11.8 cufft_dev_11.8 cuda_profiler_api_11.8
     rm cuda.exe
     # Create symlink to a directory without spaces
-    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8'"
+    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v11.8'"
 
     # Create pip.ini file with PyTorch CUDA 11.8 index
     echo "[global]
@@ -30,7 +30,7 @@ elif [ "$ACCELERATOR" == "cu126" ]; then
     ./cuda.exe -s nvcc_12.6 nvrtc_12.6 nvrtc_dev_12.6 cudart_12.6 cufft_12.6 cufft_dev_12.6 cuda_profiler_api_12.6
     rm cuda.exe
     # Create symlink to a directory without spaces
-    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6'"
+    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6'"
 
     # Create pip.ini file with PyTorch CUDA 12.6 index
     echo "[global]
@@ -42,7 +42,7 @@ elif [ "$ACCELERATOR" == "cu128" ]; then
     ./cuda.exe -s nvcc_12.8 nvrtc_12.8 nvrtc_dev_12.8 cudart_12.8 cufft_12.8 cufft_dev_12.8 cuda_profiler_api_12.8
     rm cuda.exe
     # Create symlink to a directory without spaces
-    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8'"
+    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.8'"
 
     # Create pip.ini file with PyTorch CUDA 12.8 index
     echo "[global]

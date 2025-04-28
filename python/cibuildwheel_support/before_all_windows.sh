@@ -17,8 +17,8 @@ if [ "$ACCELERATOR" == "cu118" ]; then
     curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_522.06_windows.exe
     ./cuda.exe -s nvcc_11.8 nvrtc_11.8 nvrtc_dev_11.8 cudart_11.8 cufft_11.8 cufft_dev_11.8 cuda_profiler_api_11.8
     rm cuda.exe
-    # Create symlink to a directory without spaces
-    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v11.8'"
+    # Move CUDA folder to a path without spaces
+    cmd.exe /c "move \"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v11.8\" D:\\cuda"
 
     # Create pip.ini file with PyTorch CUDA 11.8 index
     echo "[global]
@@ -29,8 +29,8 @@ elif [ "$ACCELERATOR" == "cu126" ]; then
     curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.76_windows.exe
     ./cuda.exe -s nvcc_12.6 nvrtc_12.6 nvrtc_dev_12.6 cudart_12.6 cufft_12.6 cufft_dev_12.6 cuda_profiler_api_12.6
     rm cuda.exe
-    # Create symlink to a directory without spaces
-    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6'"
+    # Move CUDA folder to a path without spaces
+    cmd.exe /c "move \"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\" D:\\cuda"
 
     # Create pip.ini file with PyTorch CUDA 12.6 index
     echo "[global]
@@ -41,8 +41,8 @@ elif [ "$ACCELERATOR" == "cu128" ]; then
     curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.8.1/local_installers/cuda_12.8.1_572.61_windows.exe
     ./cuda.exe -s nvcc_12.8 nvrtc_12.8 nvrtc_dev_12.8 cudart_12.8 cufft_12.8 cufft_dev_12.8 cuda_profiler_api_12.8
     rm cuda.exe
-    # Create symlink to a directory without spaces
-    cmd.exe /c "mklink /D $(cygpath -w /d/cuda) 'C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.8'"
+    # Move CUDA folder to a path without spaces
+    cmd.exe /c "move \"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.8\" D:\\cuda"
 
     # Create pip.ini file with PyTorch CUDA 12.8 index
     echo "[global]
@@ -54,9 +54,8 @@ elif [ "$ACCELERATOR" == "hip" ]; then
     rm HIP.exe
 fi
 
-ls -lh /d/cuda
 ls -lh D:\\cuda
-ls -ls D:\\cuda\\bin
+ls -lh D:\\cuda\\bin
 
 # Download and extract OpenCL
 curl --netrc-optional -L -nv -o OpenCL-SDK.zip https://github.com/KhronosGroup/OpenCL-SDK/releases/download/v2024.10.24/OpenCL-SDK-v2024.10.24-Win-x64.zip

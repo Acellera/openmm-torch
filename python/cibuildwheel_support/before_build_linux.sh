@@ -7,6 +7,7 @@ set -x
 pip install torch openmm==8.2.1rc1
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 
+CMAKE_FLAGS=""
 if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELERATOR" == "cu128" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
@@ -15,6 +16,11 @@ if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELER
     CMAKE_FLAGS+="    -DCMAKE_CUDA_ARCHITECTURES=${ARCH_LIST_FMT}"
     CMAKE_FLAGS+="    -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME}"
     CMAKE_FLAGS+="    -DCMAKE_CUDA_COMPILER=${CUDA_HOME}/bin/nvcc"
+fi
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    CMAKE_FLAGS+=" -DOPENCL_INCLUDE_DIR=/usr/include/CL"
+    CMAKE_FLAGS+=" -DOPENCL_LIBRARY=/usr/lib64/libOpenCL.so.1"
 fi
 
 # Configure build with Cmake
@@ -32,8 +38,6 @@ cmake .. \
     -DPYTORCH_DIR=${SITE_PACKAGES}/torch \
     -DTorch_DIR=${SITE_PACKAGES}/torch/share/cmake/Torch \
     -DNN_BUILD_OPENCL_LIB=ON \
-    -DOPENCL_INCLUDE_DIR=/usr/include/CL \
-    -DOPENCL_LIBRARY=/usr/lib64/libOpenCL.so.1 \
     ${CMAKE_FLAGS}
 
 # Build OpenMMTorch

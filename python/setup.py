@@ -28,7 +28,7 @@ if platform.system() == 'Windows':
 if platform.system() == 'Darwin':
     extra_compile_args += ['-stdlib=libc++', '-mmacosx-version-min=10.13']
     extra_link_args += ['-stdlib=libc++', '-mmacosx-version-min=10.13']
-    runtime_library_dirs += ['@loader_path/../openmm/lib', '@loader_path/../torch/lib']
+    runtime_library_dirs = ['@loader_path/../openmm/lib', '@loader_path/../torch/lib']
 
 extension = Extension(name='openmmtorch._openmmtorch',
                       sources=['openmmtorch/TorchPluginWrapper.cpp'],

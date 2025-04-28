@@ -59,7 +59,7 @@ cp -r install/include python/openmmtorch/
 
 # Copy the libraries of openmm
 mkdir -p python/openmm/
-cp -r install/lib/ python/openmm/
+cp -r install/lib python/openmm/
 
 tree python/openmm/
 tree python/openmmtorch/

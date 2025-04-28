@@ -35,6 +35,7 @@ export LD_LIBRARY_PATH=/usr/lib/:/usr/local/cuda/targets/x86_64-linux/lib/:$LD_L
 if [ "$(uname -m)" == "aarch64" ]; then
     export LD_LIBRARY_PATH=/usr/lib64/:$LD_LIBRARY_PATH
     ls -lh /usr/lib64/
+    ln -s /usr/lib64/libgfortran.so.5.0.0 /usr/lib64/libgfortran-0b50f350.so.5.0.0
 fi
 
 cmake .. \

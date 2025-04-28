@@ -17,6 +17,7 @@ if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELER
     CMAKE_FLAGS="-DTORCH_CUDA_ARCH_LIST=${ARCH_LIST}"
     CMAKE_FLAGS+=" -DCMAKE_CUDA_ARCHITECTURES=${ARCH_LIST_FMT}"
     CMAKE_FLAGS+=" -DCUDA_TOOLKIT_ROOT_DIR=/d/cuda"
+    CMAKE_FLAGS+=" -DCUDA_NVCC_EXECUTABLE=/d/cuda/bin/nvcc.exe"
     CMAKE_FLAGS+=" -DCMAKE_CUDA_COMPILER=/d/cuda/bin/nvcc.exe"
 fi
 
@@ -45,7 +46,7 @@ cmake .. -G "NMake Makefiles JOM" \
     -DNN_BUILD_OPENCL_LIB=ON \
     -DOPENCL_INCLUDE_DIR="${OPENCL_PATH}/include" \
     -DOPENCL_LIBRARY="${OPENCL_PATH}/lib/OpenCL.lib" \
-    ${CMAKE_FLAGS}
+    $CMAKE_FLAGS
 
 # Build OpenMMTorch
 jom -j 4 install

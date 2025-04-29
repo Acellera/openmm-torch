@@ -11,4 +11,4 @@ echo "[global]
 extra-index-url = https://download.pytorch.org/whl/cpu
                   https://us-central1-python.pkg.dev/pypi-packages-455608/cpu/simple" > $HOME/.config/pip/pip.conf
 
-cp python/setup.py setup.py.bkp
+cp python/setup.py $HOME/setup.py.bkp

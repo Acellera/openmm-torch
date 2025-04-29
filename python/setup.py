@@ -10,7 +10,7 @@ nn_plugin_library_dir = '@NN_PLUGIN_LIBRARY_DIR@'
 torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 
 
-extra_compile_args = ['-std=c++17']
+extra_compile_args = ['-std=c++17', '-D_GLIBCXX_USE_CXX11_ABI=1']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch', 'c10', 'torch']
 if os.environ.get("ACCELERATOR", "").startswith("cu"):
@@ -22,7 +22,7 @@ runtime_library_dirs = ["$ORIGIN/../openmm/lib", "$ORIGIN/../torch/lib"]
 # For Windows change the compiler flag to /std:c++17
 define_macros = []
 if platform.system() == 'Windows':
-    extra_compile_args = ['/std:c++17', '/EHsc']
+    extra_compile_args += ['/std:c++17', '/EHsc']
     runtime_library_dirs = None
     define_macros.append( ('WIN32', None) )
     define_macros.append( ('_WINDOWS', None) )

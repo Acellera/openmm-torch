@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cp setup.py.bkp python/setup.py
+cp $HOME/setup.py.bkp python/setup.py
 rm python/TorchPluginWrapper.cpp
 rm python/openmmtorch.py
 rm -rf python/openmm/

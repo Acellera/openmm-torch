@@ -10,7 +10,6 @@ rm -f python/TorchPluginWrapper.cpp
 rm -f python/openmmtorch.py
 rm -rf python/openmm/
 rm -rf python/openmmtorch/include
-rm -rf build install
 
 # Install dependencies with pip
 pip uninstall torch openmm -y

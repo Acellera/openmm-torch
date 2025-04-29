@@ -20,8 +20,10 @@ mkdir -p build
 mkdir -p install
 cd build
 
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
+CC=/usr/bin/clang
+CXX=/usr/bin/clang++
+CMAKE_CXX_FLAGS="-mmacosx-version-min=10.7"
+CMAKE_SHARED_LINKER_FLAGS="-mmacosx-version-min=10.7"
 
 cmake .. \
     -DCMAKE_INSTALL_PREFIX=../install \

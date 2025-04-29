@@ -2,7 +2,13 @@
 
 set -e
 set -x
- 
+
+cp setup.py.bkp python/setup.py
+rm python/TorchPluginWrapper.cpp
+rm python/openmmtorch.py
+rm -rf python/openmm/
+rm -rf python/openmmtorch/include
+
 pip uninstall torch openmm -y
 pip install torch openmm==8.2.1rc1
 unset SITE_PACKAGES

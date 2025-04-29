@@ -41,3 +41,4 @@ cp -r install/include python/openmmtorch/
 mkdir -p python/openmm/
 cp -r install/lib python/openmm/lib
 
+rm -rf install build

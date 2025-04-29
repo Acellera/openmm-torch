@@ -3,12 +3,14 @@
 set -e
 set -x
 
+# Cleanup the python folder from previous build
 cp $HOME/setup.py.bkp python/setup.py
 rm -f python/TorchPluginWrapper.cpp
 rm -f python/openmmtorch.py
 rm -rf python/openmm/
 rm -rf python/openmmtorch/include
 
+# Install dependencies with pip
 pip uninstall torch openmm -y
 pip install torch openmm==8.2.1rc1
 unset SITE_PACKAGES
@@ -39,6 +41,7 @@ make -j4 PythonInstall
 
 cd ..
 
+# Copy the generated python files and headers to openmmtorch
 cp build/python/setup.py python/
 cp build/python/openmmtorch.py python/openmmtorch/
 cp build/python/TorchPluginWrapper.cpp python/openmmtorch/

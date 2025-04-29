@@ -20,9 +20,13 @@ else:
 runtime_library_dirs = ["$ORIGIN/../openmm/lib", "$ORIGIN/../torch/lib"]
 
 # For Windows change the compiler flag to /std:c++17
+define_macros = []
 if platform.system() == 'Windows':
-    extra_compile_args = ['/std:c++17']
+    extra_compile_args = ['/std:c++17', '/EHsc']
     runtime_library_dirs = None
+    define_macros.append( ('WIN32', None) )
+    define_macros.append( ('_WINDOWS', None) )
+    define_macros.append( (' _MSC_VER', None) )
 
 # setup extra compile and link arguments on Mac
 if platform.system() == 'Darwin':
@@ -37,7 +41,8 @@ extension = Extension(name='openmmtorch._openmmtorch',
                       library_dirs=[os.path.join(openmm_dir, 'lib'), nn_plugin_library_dir, torch_dir],
                       runtime_library_dirs=runtime_library_dirs,
                       extra_compile_args=extra_compile_args,
-                      extra_link_args=extra_link_args
+                      extra_link_args=extra_link_args,
+                      define_macros=define_macros,
                      )
 
 setup(name='openmmtorch',

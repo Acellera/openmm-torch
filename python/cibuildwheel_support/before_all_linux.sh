@@ -9,6 +9,7 @@ dnf install -y zip opencl-headers ocl-icd tree
 # Check if we are running on aarch64
 if [ "$(uname -m)" == "aarch64" ]; then
     dnf install -y libgfortran
+    ln -s /usr/lib64/libgfortran.so.5.0.0 /usr/lib64/libgfortran-0b50f350.so.5.0.0
 fi
 
 # Configure pip to use PyTorch extra-index-url for CPU
@@ -88,3 +89,5 @@ elif [ "$ACCELERATOR" == "hip" ]; then
     dnf install -y https://repo.radeon.com/amdgpu-install/6.2.2/el/8.10/amdgpu-install-6.2.60202-1.el8.noarch.rpm
     dnf install -y rocm-device-libs hip-devel hip-runtime-amd hipcc
 fi
+
+pip install torch openmm==8.2.1rc1

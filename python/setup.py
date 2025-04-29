@@ -12,9 +12,9 @@ torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 
 extra_compile_args = ['-std=c++17', '-D_GLIBCXX_USE_CXX11_ABI=1']
 extra_link_args = []
-libraries = ['OpenMM', 'OpenMMTorch', 'c10', 'torch', 'torch_cpu']
+libraries = ['OpenMM', 'OpenMMTorch', 'c10', 'torch', 'torch_cpu', 'torch_python']
 if os.environ.get("ACCELERATOR", "").startswith("cu"):
-    libraries += ['cudart', 'c10_cuda', 'torch_cuda']
+    libraries += ['c10_cuda', 'torch_cuda']
 
 runtime_library_dirs = ["$ORIGIN/../openmm/lib", "$ORIGIN/../torch/lib"]
 

@@ -14,15 +14,14 @@ if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELER
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
 
+    export CUDA_PATH="/d/cuda"
     CMAKE_FLAGS="-DTORCH_CUDA_ARCH_LIST=${ARCH_LIST}"
     CMAKE_FLAGS+=" -DCMAKE_CUDA_ARCHITECTURES=${ARCH_LIST_FMT}"
-    CMAKE_FLAGS+=" -DCUDA_TOOLKIT_ROOT_DIR=/d/cuda"
-    CMAKE_FLAGS+=" -DCUDA_NVCC_EXECUTABLE=/d/cuda/bin/nvcc.exe"
-    CMAKE_FLAGS+=" -DCMAKE_CUDA_COMPILER=/d/cuda/bin/nvcc.exe"
-    CMAKE_FLAGS+=" -DCUDA_DRIVER_LIBRARY_PATH=/d/cuda/lib/x64/"
+    CMAKE_FLAGS+=" -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_PATH}"
+    CMAKE_FLAGS+=" -DCUDA_NVCC_EXECUTABLE=${CUDA_PATH}/bin/nvcc.exe"
+    CMAKE_FLAGS+=" -DCMAKE_CUDA_COMPILER=${CUDA_PATH}/bin/nvcc.exe"
+    CMAKE_FLAGS+=" -DCUDA_DRIVER_LIBRARY_PATH=${CUDA_PATH}/lib/x64/"
     export TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
-
-    export CUDA_PATH="/d/cuda"
 fi
 
 CMAKE_GENERATOR=Ninja

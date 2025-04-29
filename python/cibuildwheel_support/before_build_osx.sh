@@ -4,8 +4,8 @@ set -e
 set -x
 
 cp $HOME/setup.py.bkp python/setup.py
-rm python/TorchPluginWrapper.cpp
-rm python/openmmtorch.py
+rm -f python/TorchPluginWrapper.cpp
+rm -f python/openmmtorch.py
 rm -rf python/openmm/
 rm -rf python/openmmtorch/include
 

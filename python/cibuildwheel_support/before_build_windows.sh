@@ -4,7 +4,6 @@ set -e
 set -x
 
 # Cleanup the python folder from previous build
-rm -f python/setup.py
 cp /d/setup.py.bkp python/setup.py
 rm -f python/TorchPluginWrapper.cpp
 rm -f python/openmmtorch.py

@@ -21,10 +21,8 @@ if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELER
     CMAKE_FLAGS+=" -DCUDA_NVCC_EXECUTABLE=${CUDA_PATH}/bin/nvcc.exe"
     CMAKE_FLAGS+=" -DCMAKE_CUDA_COMPILER=${CUDA_PATH}/bin/nvcc.exe"
     CMAKE_FLAGS+=" -DCUDA_DRIVER_LIBRARY_PATH=${CUDA_PATH}/lib/x64/"
-    export TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 fi
 
-CMAKE_GENERATOR=Ninja
 OPENCL_PATH="$(pwd)/OpenCL-SDK-v2024.10.24-Win-x64"
 
 # Configure build with Cmake
@@ -45,7 +43,6 @@ cmake .. -G "NMake Makefiles JOM" \
     -DOPENMM_DIR=${SITE_PACKAGES}/openmm \
     -DPYTORCH_DIR=${SITE_PACKAGES}/torch \
     -DTorch_DIR=${SITE_PACKAGES}/torch/share/cmake/Torch \
-    -DNN_BUILD_PYTHON_WRAPPERS=ON \
     -DNN_BUILD_OPENCL_LIB=ON \
     -DOPENCL_INCLUDE_DIR="${OPENCL_PATH}/include" \
     -DOPENCL_LIBRARY="${OPENCL_PATH}/lib/OpenCL.lib" \

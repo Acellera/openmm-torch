@@ -4,6 +4,7 @@ set -e
 set -x
 
 pip install torch openmm==8.2.1rc1
+unset SITE_PACKAGES
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 
 # Configure build with Cmake
@@ -38,3 +39,6 @@ cp -r install/include python/openmmtorch/
 # Copy the libraries of openmm
 mkdir -p python/openmm/
 cp -r install/lib python/openmm/lib
+
+# Uninstall the libraries
+pip uninstall torch openmm -y

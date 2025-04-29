@@ -45,7 +45,7 @@ test-requires = ["pytest"]
 test-command = "pytest {project}/python/tests --ignore={project}/python/tests/TestInteroperability.py"
 manylinux-x86_64-image = "manylinux_2_28"
 manylinux-aarch64-image = "manylinux_2_28"
-environment-pass = ["ACCELERATOR", "CUDA_HOME"]
+environment-pass = ["ACCELERATOR"]
 # container-engine = "docker; create_args: --gpus all"
 
 [tool.cibuildwheel.windows]

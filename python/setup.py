@@ -13,8 +13,11 @@ torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 extra_compile_args = ['-std=c++17', '-D_GLIBCXX_USE_CXX11_ABI=1']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch', 'c10', 'torch', 'torch_cpu', 'torch_python']
+extra_deps = []
 if os.environ.get("ACCELERATOR", "").startswith("cu"):
     libraries += ['c10_cuda', 'torch_cuda']
+    cuda_ver = os.getenv("ACCELERATOR", "")[2:4]
+    extra_deps = [f'nvidia-cuda-runtime-cu{cuda_ver}']
 
 runtime_library_dirs = ["$ORIGIN/../openmm/lib", "$ORIGIN/../torch/lib"]
 
@@ -43,5 +46,5 @@ setup(name='openmmtorch',
       version=version,
       py_modules=['openmmtorch'],
       ext_modules=[extension],
-      install_requires=['openmm==8.2.1rc1', 'torch']
+      install_requires=['openmm==8.2.1rc1', 'torch'] + extra_deps
      )

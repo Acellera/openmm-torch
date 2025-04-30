@@ -55,7 +55,7 @@ test-command = "pytest {project}\\python\\tests --ignore={project}\\python\\test
 [tool.cibuildwheel.linux]
 before-all = "bash {project}/python/cibuildwheel_support/before_all_linux.sh"
 repair-wheel-command = [
-  "auditwheel repair --exclude libcudart.so --exclude libOpenMMTorch.so --exclude libc10.so --exclude libc10_cuda.so --exclude libtorch.so --exclude libtorch_cuda.so --exclude libtorch_cpu.so --exclude libtorch_python.so --exclude libOpenMM.so --exclude libOpenMMCUDA.so --exclude libOpenMMHIP.so --exclude libOpenMMOpenCL.so --exclude libOpenMMDrude.so --exclude libOpenMMAmoeba.so --exclude libOpenMMRPMD.so --exclude libOpenCL.so.1 --exclude libcuda.so.1 --exclude libcufft.so.11 --exclude libcufft.so.10 --exclude libnvrtc.so.11.2 --exclude libnvrtc.so.12 --exclude libhiprtc.so.6 --exclude libamdhip64.so.6 -w {dest_dir} {wheel}",
+  "auditwheel repair --exclude libcudart.so.* --exclude libOpenMMTorch.so --exclude libc10.so --exclude libc10_cuda.so --exclude libtorch.so --exclude libtorch_cuda.so --exclude libtorch_cpu.so --exclude libtorch_python.so --exclude libOpenMM.so --exclude libOpenMMCUDA.so --exclude libOpenMMHIP.so --exclude libOpenMMOpenCL.so --exclude libOpenMMDrude.so --exclude libOpenMMAmoeba.so --exclude libOpenMMRPMD.so --exclude libOpenCL.so.1 --exclude libcuda.so.1 --exclude libcufft.so.11 --exclude libcufft.so.10 --exclude libnvrtc.so.11.2 --exclude libnvrtc.so.12 --exclude libhiprtc.so.6 --exclude libamdhip64.so.6 -w {dest_dir} {wheel}",
 ]
 
 [tool.cibuildwheel.macos]

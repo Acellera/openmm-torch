@@ -40,6 +40,7 @@ if [ "$ACCELERATOR" == "cu118" ]; then
 extra-index-url = https://download.pytorch.org/whl/cu118
                   https://us-central1-python.pkg.dev/pypi-packages-455608/cu118/simple" > $HOME/.config/pip/pip.conf
 
+    pip install openmm-unofficial-cu11
 elif [ "$ACCELERATOR" == "cu126" ]; then
     # Install CUDA 12.6
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
@@ -62,6 +63,7 @@ elif [ "$ACCELERATOR" == "cu126" ]; then
 extra-index-url = https://download.pytorch.org/whl/cu126
                   https://us-central1-python.pkg.dev/pypi-packages-455608/cu126/simple" > $HOME/.config/pip/pip.conf
 
+    pip install openmm-unofficial-cu12
 elif [ "$ACCELERATOR" == "cu128" ]; then
     # Install CUDA 12.8
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
@@ -84,14 +86,18 @@ elif [ "$ACCELERATOR" == "cu128" ]; then
 extra-index-url = https://download.pytorch.org/whl/cu128
                   https://us-central1-python.pkg.dev/pypi-packages-455608/cu128/simple" > $HOME/.config/pip/pip.conf
 
+    pip install openmm-unofficial-cu12
 elif [ "$ACCELERATOR" == "hip" ]; then
     # Install HIP 6.2
     dnf install -y https://repo.radeon.com/amdgpu-install/6.2.2/el/8.10/amdgpu-install-6.2.60202-1.el8.noarch.rpm
     dnf install -y rocm-device-libs hip-devel hip-runtime-amd hipcc
+    pip install openmm-unofficial-cpu
+else
+    pip install openmm-unofficial-cpu
 fi
 
 #################
-pip install torch openmm==8.2.1rc1
+pip install torch==2.7.1
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 
 CMAKE_FLAGS=""

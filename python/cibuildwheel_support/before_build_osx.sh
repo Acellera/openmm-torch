@@ -12,7 +12,7 @@ rm -rf python/openmmtorch/include
 
 # Install dependencies with pip
 pip uninstall torch openmm -y
-pip install torch openmm==8.2.1rc1
+pip install torch openmm-unofficial-cpu
 unset SITE_PACKAGES
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 

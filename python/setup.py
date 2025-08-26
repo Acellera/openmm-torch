@@ -46,5 +46,5 @@ setup(name='openmmtorch',
       version=version,
       py_modules=['openmmtorch'],
       ext_modules=[extension],
-      install_requires=['torch'] + extra_deps
+      install_requires=extra_deps
      )

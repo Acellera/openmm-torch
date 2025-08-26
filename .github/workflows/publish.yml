@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2019, macos-latest]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2022, macos-latest]
         accelerator: [cpu, cu118, cu126, cu128]
         exclude:
           - os: ubuntu-24.04-arm
@@ -50,23 +50,23 @@ jobs:
 
       - name: Activate MSVC
         uses: ilammy/msvc-dev-cmd@v1
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2022'
 
       - name: "Install dependencies with choco"
         uses: crazy-max/ghaction-chocolatey@v3
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2022'
         with:
           args: install jom
 
       - name: Build wheels
-        if: matrix.os != 'windows-2019'
+        if: matrix.os != 'windows-2022'
         shell: bash -l {0}
         run: python -m cibuildwheel python/ --output-dir wheelhouse
         env:
           ACCELERATOR: ${{ matrix.accelerator }}
 
       - name: Build wheels
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2022'
         shell: cmd # Use cmd on Windows to avoid bash environment taking priority over MSVC variables
         run: python -m cibuildwheel python/ --output-dir wheelhouse
         env:

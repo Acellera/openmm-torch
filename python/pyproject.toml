@@ -1,5 +1,5 @@
 [project]
-name = "openmm-torch"
+name = "PLACEHOLDER"
 description = "Python wrapper for OpenMM (a C++ MD package)"
 authors = [{ name = "Peter Eastman", email = "peastman@stanford.edu" }]
 readme = "README.md"

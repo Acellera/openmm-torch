@@ -8,8 +8,7 @@ mkdir -p "C:\ProgramData\pip"
 
 # Create pip.ini file with PyTorch CPU index
 echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cpu
-                  https://us-central1-python.pkg.dev/pypi-packages-455608/cpu/simple" > "C:\ProgramData\pip\pip.ini"
+extra-index-url = https://download.pytorch.org/whl/cpu" > "C:\ProgramData\pip\pip.ini"
 
 
 if [ "$ACCELERATOR" == "cu118" ]; then
@@ -21,32 +20,19 @@ if [ "$ACCELERATOR" == "cu118" ]; then
 
     # Create pip.ini file with PyTorch CUDA 11.8 index
     echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu118
-                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu118/simple" > "C:\ProgramData\pip\pip.ini"
+extra-index-url = https://download.pytorch.org/whl/cu118" > "C:\ProgramData\pip\pip.ini"
+    
     pip install openmm-unofficial-cu11
-elif [ "$ACCELERATOR" == "cu126" ]; then
-    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.76_windows.exe
-    ./cuda.exe -s nvcc_12.6 nvrtc_12.6 nvrtc_dev_12.6 cudart_12.6 cufft_12.6 cufft_dev_12.6 cuda_profiler_api_12.6 nvtx_12.6
+elif [ "$ACCELERATOR" == "cu120" ]; then
+    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/cuda_12.0.0_527.41_windows.exe
+    ./cuda.exe -s nvcc_12.0 nvrtc_12.0 nvrtc_dev_12.0 cudart_12.0 cufft_12.0 cufft_dev_12.0 cuda_profiler_api_12.0
     rm cuda.exe
     # Move CUDA folder to a path without spaces
-    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6" /d/cuda
-
+    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.0" /c/CUDA
     # Create pip.ini file with PyTorch CUDA 12.6 index
     echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu126
-                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu126/simple" > "C:\ProgramData\pip\pip.ini"
-    pip install openmm-unofficial-cu12
-elif [ "$ACCELERATOR" == "cu128" ]; then
-    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.8.1/local_installers/cuda_12.8.1_572.61_windows.exe
-    ./cuda.exe -s nvcc_12.8 nvrtc_12.8 nvrtc_dev_12.8 cudart_12.8 cufft_12.8 cufft_dev_12.8 cuda_profiler_api_12.8 nvtx_12.8
-    rm cuda.exe
-    # Move CUDA folder to a path without spaces
-    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8" /d/cuda
+extra-index-url = https://download.pytorch.org/whl/cu126" > "C:\ProgramData\pip\pip.ini"
 
-    # Create pip.ini file with PyTorch CUDA 12.8 index
-    echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu128
-                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu128/simple" > "C:\ProgramData\pip\pip.ini"
     pip install openmm-unofficial-cu12
 elif [ "$ACCELERATOR" == "hip" ]; then
     curl.exe --output HIP.exe --url https://download.amd.com/developer/eula/rocm-hub/AMD-Software-PRO-Edition-24.Q3-Win10-Win11-For-HIP.exe
@@ -70,7 +56,7 @@ PYTHONPREFIX=$(python -c 'import site; print(site.getsitepackages()[0])')
 SITE_PACKAGES="$PYTHONPREFIX/Lib/site-packages/"
 
 CMAKE_FLAGS="-DENABLE_CUDA=OFF"
-if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELERATOR" == "cu128" ]; then
+if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu120" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")

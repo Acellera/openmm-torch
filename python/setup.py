@@ -9,6 +9,21 @@ nn_plugin_header_dir = '@NN_PLUGIN_HEADER_DIR@'
 nn_plugin_library_dir = '@NN_PLUGIN_LIBRARY_DIR@'
 torch_dir, _ = os.path.split('@TORCH_LIBRARY@')
 
+def _replace_name(name):
+    import pathlib
+    
+    pyproject_path = pathlib.Path(__file__).parent / "pyproject.toml"
+    with open(pyproject_path, 'r') as f:
+        pyproject_text = f.read()
+    pyproject_text = pyproject_text.replace("PLACEHOLDER", name)
+    with open(pyproject_path, 'w') as f:
+        f.write(pyproject_text)
+
+if os.getenv("ACCELERATOR", "").startswith("cpu"):
+    _replace_name("openmm-torch-unofficial-cpu")
+if os.getenv("ACCELERATOR", "").startswith("cu"):
+    cuda_ver = os.getenv("ACCELERATOR", "")[2:4]
+    _replace_name(f"openmm-torch-unofficial-cu{cuda_ver}")
 
 extra_compile_args = ['-std=c++17', '-D_GLIBCXX_USE_CXX11_ABI=1']
 extra_link_args = []
@@ -42,7 +57,7 @@ extension = Extension(name='openmmtorch._openmmtorch',
                       extra_link_args=extra_link_args
                      )
 
-setup(name='openmmtorch',
+setup(
       version=version,
       py_modules=['openmmtorch'],
       ext_modules=[extension],

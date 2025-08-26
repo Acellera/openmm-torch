@@ -15,8 +15,7 @@ fi
 # Configure pip to use PyTorch extra-index-url for CPU
 mkdir -p $HOME/.config/pip
 echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cpu
-                  https://us-central1-python.pkg.dev/pypi-packages-455608/cpu/simple" > $HOME/.config/pip/pip.conf
+extra-index-url = https://download.pytorch.org/whl/cpu" > $HOME/.config/pip/pip.conf
 
 if [ "$ACCELERATOR" == "cu118" ]; then
     # Install CUDA 11.8
@@ -37,22 +36,21 @@ if [ "$ACCELERATOR" == "cu118" ]; then
     # Configure pip to use PyTorch extra-index-url for CUDA 11.8
     mkdir -p $HOME/.config/pip
     echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu118
-                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu118/simple" > $HOME/.config/pip/pip.conf
+extra-index-url = https://download.pytorch.org/whl/cu118" > $HOME/.config/pip/pip.conf
 
     pip install openmm-unofficial-cu11
-elif [ "$ACCELERATOR" == "cu126" ]; then
-    # Install CUDA 12.6
+elif [ "$ACCELERATOR" == "cu120" ]; then
+    # Install CUDA 12.0
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
 
     dnf install --setopt=obsoletes=0 -y \
-        cuda-compiler-12-6-12.6.3-1 \
-        cuda-libraries-12-6-12.6.3-1 \
-        cuda-libraries-devel-12-6-12.6.3-1 \
-        cuda-toolkit-12-6-12.6.3-1 \
+        cuda-compiler-12-0-12.0.1-1 \
+        cuda-libraries-12-0-12.0.1-1 \
+        cuda-libraries-devel-12-0-12.0.1-1 \
+        cuda-toolkit-12-0-12.0.1-1 \
         gcc-toolset-13
 
-    ln -s cuda-12.6 /usr/local/cuda
+    ln -s cuda-12.0 /usr/local/cuda
     ln -s /opt/rh/gcc-toolset-13/root/usr/bin/gcc /usr/local/cuda/bin/gcc
     ln -s /opt/rh/gcc-toolset-13/root/usr/bin/g++ /usr/local/cuda/bin/g++
     ln -s /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so /usr/lib/libcuda.so.1
@@ -60,31 +58,7 @@ elif [ "$ACCELERATOR" == "cu126" ]; then
     # Configure pip to use PyTorch extra-index-url for CUDA 12.6
     mkdir -p $HOME/.config/pip
     echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu126
-                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu126/simple" > $HOME/.config/pip/pip.conf
-
-    pip install openmm-unofficial-cu12
-elif [ "$ACCELERATOR" == "cu128" ]; then
-    # Install CUDA 12.8
-    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
-
-    dnf install --setopt=obsoletes=0 -y \
-        cuda-compiler-12-8-12.8.1-1 \
-        cuda-libraries-12-8-12.8.1-1 \
-        cuda-libraries-devel-12-8-12.8.1-1 \
-        cuda-toolkit-12-8-12.8.1-1 \
-        gcc-toolset-13
-
-    ln -s cuda-12.8 /usr/local/cuda
-    ln -s /opt/rh/gcc-toolset-13/root/usr/bin/gcc /usr/local/cuda/bin/gcc
-    ln -s /opt/rh/gcc-toolset-13/root/usr/bin/g++ /usr/local/cuda/bin/g++
-    ln -s /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so /usr/lib/libcuda.so.1
-
-    # Configure pip to use PyTorch extra-index-url for CUDA 12.8
-    mkdir -p $HOME/.config/pip
-    echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu128
-                  https://us-central1-python.pkg.dev/pypi-packages-455608/cu128/simple" > $HOME/.config/pip/pip.conf
+extra-index-url = https://download.pytorch.org/whl/cu126" > $HOME/.config/pip/pip.conf
 
     pip install openmm-unofficial-cu12
 elif [ "$ACCELERATOR" == "hip" ]; then
@@ -101,7 +75,7 @@ pip install torch==2.7.1
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 
 CMAKE_FLAGS=""
-if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ] || [ "$ACCELERATOR" == "cu128" ]; then
+if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu120" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")

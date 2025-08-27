@@ -48,11 +48,11 @@ elif [ "$ACCELERATOR" == "cu120" ]; then
         cuda-libraries-12-0-12.0.1-1 \
         cuda-libraries-devel-12-0-12.0.1-1 \
         cuda-toolkit-12-0-12.0.1-1 \
-        gcc-toolset-13
+        gcc-toolset-11
 
     ln -s cuda-12.0 /usr/local/cuda
-    ln -s /opt/rh/gcc-toolset-13/root/usr/bin/gcc /usr/local/cuda/bin/gcc
-    ln -s /opt/rh/gcc-toolset-13/root/usr/bin/g++ /usr/local/cuda/bin/g++
+    ln -s /opt/rh/gcc-toolset-11/root/usr/bin/gcc /usr/local/cuda/bin/gcc
+    ln -s /opt/rh/gcc-toolset-11/root/usr/bin/g++ /usr/local/cuda/bin/g++
     ln -s /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so /usr/lib/libcuda.so.1
 
     # Configure pip to use PyTorch extra-index-url for CUDA 12.6

@@ -1,6 +1,6 @@
 [project]
 name = "PLACEHOLDER"
-description = "OpenMM PyTorch Plugin"
+description = "Python wrapper for OpenMM (a C++ MD package)"
 authors = [{ name = "Peter Eastman", email = "peastman@stanford.edu" }]
 readme = "README.md"
 license = "PSF-2.0"
@@ -41,7 +41,7 @@ skip = [
   "*_universal2",
   "*-musllinux_*",
 ]
-test-requires = ["pytest", "openmm-unofficial-cpu", "torch==2.6.0"]
+test-requires = ["pytest", "openmm-unofficial-cpu", "torch==2.7.1"]
 test-command = "pytest {project}/python/tests --ignore={project}/python/tests/TestInteroperability.py"
 manylinux-x86_64-image = "manylinux_2_28"
 manylinux-aarch64-image = "manylinux_2_28"

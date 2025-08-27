@@ -22,18 +22,7 @@ if [ "$ACCELERATOR" == "cu118" ]; then
     echo "[global]
 extra-index-url = https://download.pytorch.org/whl/cu118" > "C:\ProgramData\pip\pip.ini"
     
-    pip install openmm-unofficial-cu11 torch==2.6.0
-elif [ "$ACCELERATOR" == "cu124" ]; then
-    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_551.61_windows.exe
-    ./cuda.exe -s nvcc_12.4 nvrtc_12.4 nvrtc_dev_12.4 cudart_12.4 cufft_12.4 cufft_dev_12.4 cuda_profiler_api_12.4 nvtx_12.4
-    rm cuda.exe
-    # Move CUDA folder to a path without spaces
-    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.4" /d/cuda
-    # Create pip.ini file with PyTorch CUDA 12.4 index
-    echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu124" > "C:\ProgramData\pip\pip.ini"
-
-    pip install openmm-unofficial-cu12 torch==2.6.0
+    pip install openmm-unofficial-cu11 torch==2.7.1
 elif [ "$ACCELERATOR" == "cu126" ]; then
     curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.76_windows.exe
     ./cuda.exe -s nvcc_12.6 nvrtc_12.6 nvrtc_dev_12.6 cudart_12.6 cufft_12.6 cufft_dev_12.6 cuda_profiler_api_12.6 nvtx_12.6
@@ -44,14 +33,14 @@ elif [ "$ACCELERATOR" == "cu126" ]; then
     echo "[global]
 extra-index-url = https://download.pytorch.org/whl/cu126" > "C:\ProgramData\pip\pip.ini"
 
-    pip install openmm-unofficial-cu12 torch==2.6.0
+    pip install openmm-unofficial-cu12 torch==2.7.1
 elif [ "$ACCELERATOR" == "hip" ]; then
     curl.exe --output HIP.exe --url https://download.amd.com/developer/eula/rocm-hub/AMD-Software-PRO-Edition-24.Q3-Win10-Win11-For-HIP.exe
     ./HIP.exe -install
     rm HIP.exe
-    pip install openmm-unofficial-cpu torch==2.6.0
+    pip install openmm-unofficial-cpu torch==2.7.1
 else
-    pip install openmm-unofficial-cpu torch==2.6.0
+    pip install openmm-unofficial-cpu torch==2.7.1
 fi
 
 # Download and extract OpenCL
@@ -66,7 +55,7 @@ PYTHONPREFIX=$(python -c 'import site; print(site.getsitepackages()[0])')
 SITE_PACKAGES="$PYTHONPREFIX/Lib/site-packages/"
 
 CMAKE_FLAGS="-DENABLE_CUDA=OFF"
-if [ "$ACCELERATOR" == "cu"* ]; then
+if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")

@@ -1,0 +1,4 @@
+graft openmm/
+graft openmmtorch/
+prune tests
+prune cibuildwheel_support

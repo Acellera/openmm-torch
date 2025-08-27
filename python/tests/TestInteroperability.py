@@ -36,7 +36,7 @@ def testTorchANI(use_cv_force, platform):
         system.addParticle(1.0)
     positions = pt.tensor([[-5, 0.0, 0.0], [5, 0.0, 0.0]], requires_grad=True)
 
-    with NamedTemporaryFile() as model_file:
+    with NamedTemporaryFile(delete=False) as model_file:
 
         # Save the model
         pt.jit.script(Model()).save(model_file.name)

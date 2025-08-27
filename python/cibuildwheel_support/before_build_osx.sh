@@ -11,8 +11,8 @@ rm -rf python/openmm/
 rm -rf python/openmmtorch/include
 
 # Install dependencies with pip
-pip uninstall torch==2.7.1 openmm-unofficial-cpu -y
-pip install torch==2.7.1 openmm-unofficial-cpu
+pip uninstall torch==2.6.0 openmm-unofficial-cpu -y
+pip install torch==2.6.0 openmm-unofficial-cpu
 unset SITE_PACKAGES
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 

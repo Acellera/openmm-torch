@@ -58,7 +58,7 @@ elif [ "$ACCELERATOR" == "cu120" ]; then
     # Configure pip to use PyTorch extra-index-url for CUDA 12.6
     mkdir -p $HOME/.config/pip
     echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu126" > $HOME/.config/pip/pip.conf
+extra-index-url = https://download.pytorch.org/whl/cu124" > $HOME/.config/pip/pip.conf
 
     pip install openmm-unofficial-cu12
 elif [ "$ACCELERATOR" == "hip" ]; then
@@ -71,7 +71,7 @@ else
 fi
 
 #################
-pip install torch==2.7.1
+pip install torch==2.6.0
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 
 CMAKE_FLAGS=""

@@ -38,19 +38,19 @@ if [ "$ACCELERATOR" == "cu118" ]; then
     echo "[global]
 extra-index-url = https://download.pytorch.org/whl/cu118" > $HOME/.config/pip/pip.conf
 
-    pip install openmm-unofficial-cu11
-elif [ "$ACCELERATOR" == "cu124" ]; then
-    # Install CUDA 12.4
+    pip install openmm-unofficial-cu11 torch==2.7.1
+elif [ "$ACCELERATOR" == "cu126" ]; then
+    # Install CUDA 12.6
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
 
     dnf install --setopt=obsoletes=0 -y \
-        cuda-compiler-12-4-12.4.1-1 \
-        cuda-libraries-12-4-12.4.1-1 \
-        cuda-libraries-devel-12-4-12.4.1-1 \
-        cuda-toolkit-12-4-12.4.1-1 \
+        cuda-compiler-12-6-12.6.3-1\
+        cuda-libraries-12-6-12.6.3-1 \
+        cuda-libraries-devel-12-6-12.6.3-1 \
+        cuda-toolkit-12-6-12.6.3-1 \
         gcc-toolset-13
 
-    ln -s cuda-12.4 /usr/local/cuda
+    ln -s cuda-12.6 /usr/local/cuda
     ln -s /opt/rh/gcc-toolset-13/root/usr/bin/gcc /usr/local/cuda/bin/gcc
     ln -s /opt/rh/gcc-toolset-13/root/usr/bin/g++ /usr/local/cuda/bin/g++
     ln -s /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so /usr/lib/libcuda.so.1
@@ -60,22 +60,21 @@ elif [ "$ACCELERATOR" == "cu124" ]; then
     echo "[global]
 extra-index-url = https://download.pytorch.org/whl/cu126" > $HOME/.config/pip/pip.conf
 
-    pip install openmm-unofficial-cu12
+    pip install openmm-unofficial-cu12 torch==2.7.1
 elif [ "$ACCELERATOR" == "hip" ]; then
     # Install HIP 6.2
     dnf install -y https://repo.radeon.com/amdgpu-install/6.2.2/el/8.10/amdgpu-install-6.2.60202-1.el8.noarch.rpm
     dnf install -y rocm-device-libs hip-devel hip-runtime-amd hipcc
-    pip install openmm-unofficial-cpu
+    pip install openmm-unofficial-cpu torch==2.7.1
 else
-    pip install openmm-unofficial-cpu
+    pip install openmm-unofficial-cpu torch==2.7.1
 fi
 
 #################
-pip install torch==2.7.1
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 
 CMAKE_FLAGS=""
-if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu124" ]; then
+if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu126" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")

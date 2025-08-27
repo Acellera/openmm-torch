@@ -39,20 +39,20 @@ if [ "$ACCELERATOR" == "cu118" ]; then
 extra-index-url = https://download.pytorch.org/whl/cu118" > $HOME/.config/pip/pip.conf
 
     pip install openmm-unofficial-cu11
-elif [ "$ACCELERATOR" == "cu120" ]; then
-    # Install CUDA 12.0
+elif [ "$ACCELERATOR" == "cu124" ]; then
+    # Install CUDA 12.4
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
 
     dnf install --setopt=obsoletes=0 -y \
-        cuda-compiler-12-0-12.0.1-1 \
-        cuda-libraries-12-0-12.0.1-1 \
-        cuda-libraries-devel-12-0-12.0.1-1 \
-        cuda-toolkit-12-0-12.0.1-1 \
-        gcc-toolset-11
+        cuda-compiler-12-4-12.4.1-1 \
+        cuda-libraries-12-4-12.4.1-1 \
+        cuda-libraries-devel-12-4-12.4.1-1 \
+        cuda-toolkit-12-4-12.4.1-1 \
+        gcc-toolset-13
 
-    ln -s cuda-12.0 /usr/local/cuda
-    ln -s /opt/rh/gcc-toolset-11/root/usr/bin/gcc /usr/local/cuda/bin/gcc
-    ln -s /opt/rh/gcc-toolset-11/root/usr/bin/g++ /usr/local/cuda/bin/g++
+    ln -s cuda-12.4 /usr/local/cuda
+    ln -s /opt/rh/gcc-toolset-13/root/usr/bin/gcc /usr/local/cuda/bin/gcc
+    ln -s /opt/rh/gcc-toolset-13/root/usr/bin/g++ /usr/local/cuda/bin/g++
     ln -s /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so /usr/lib/libcuda.so.1
 
     # Configure pip to use PyTorch extra-index-url for CUDA 12.6
@@ -75,7 +75,7 @@ pip install torch==2.7.1
 SITE_PACKAGES=$(python -c 'import site; print(site.getsitepackages()[0])')
 
 CMAKE_FLAGS=""
-if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu120" ]; then
+if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu124" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")

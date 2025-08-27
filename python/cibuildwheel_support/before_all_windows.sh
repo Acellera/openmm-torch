@@ -23,12 +23,12 @@ if [ "$ACCELERATOR" == "cu118" ]; then
 extra-index-url = https://download.pytorch.org/whl/cu118" > "C:\ProgramData\pip\pip.ini"
     
     pip install openmm-unofficial-cu11
-elif [ "$ACCELERATOR" == "cu120" ]; then
-    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/cuda_12.0.0_527.41_windows.exe
-    ./cuda.exe -s nvcc_12.0 nvrtc_12.0 nvrtc_dev_12.0 cudart_12.0 cufft_12.0 cufft_dev_12.0 cuda_profiler_api_12.0 nvtx_12.0
+elif [ "$ACCELERATOR" == "cu124" ]; then
+    curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_551.61_windows.exe
+    ./cuda.exe -s nvcc_12.4 nvrtc_12.4 nvrtc_dev_12.4 cudart_12.4 cufft_12.4 cufft_dev_12.4 cuda_profiler_api_12.4 nvtx_12.4
     rm cuda.exe
     # Move CUDA folder to a path without spaces
-    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.0" /d/cuda
+    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.4" /d/cuda
     # Create pip.ini file with PyTorch CUDA 12.6 index
     echo "[global]
 extra-index-url = https://download.pytorch.org/whl/cu126" > "C:\ProgramData\pip\pip.ini"
@@ -56,7 +56,7 @@ PYTHONPREFIX=$(python -c 'import site; print(site.getsitepackages()[0])')
 SITE_PACKAGES="$PYTHONPREFIX/Lib/site-packages/"
 
 CMAKE_FLAGS="-DENABLE_CUDA=OFF"
-if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu120" ]; then
+if [ "$ACCELERATOR" == "cu118" ] || [ "$ACCELERATOR" == "cu124" ]; then
     ARCH_LIST=$(python -c "import torch; print(';'.join([f'{y[:-1]}.{y[-1]}' for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")
     # CMakeLists.txt seems to ignore the CMAKE_CUDA_ARCHITECTURES variable, instead, it is overwritten by TORCH_CUDA_ARCH_LIST
     ARCH_LIST_FMT=$(python -c "import torch; print(';'.join([y for y in [x[3:] for x in torch._C._cuda_getArchFlags().split() if x.startswith('sm_')]]))")

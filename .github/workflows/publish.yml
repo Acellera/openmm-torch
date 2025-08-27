@@ -12,18 +12,18 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-2022, macos-latest]
-        accelerator: [cpu, cu118, cu120] #, cu128]
+        accelerator: [cpu, cu118, cu124] #, cu128]
         exclude:
           - os: ubuntu-24.04-arm
             accelerator: cu118
           - os: ubuntu-24.04-arm
-            accelerator: cu120
+            accelerator: cu124
           # - os: ubuntu-24.04-arm
           #   accelerator: cu128
           - os: macos-latest
             accelerator: cu118
           - os: macos-latest
-            accelerator: cu120
+            accelerator: cu124
           # - os: macos-latest
           #   accelerator: cu128
 
@@ -93,7 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        accelerator: [cpu, cu118, cu120] #, hip, cu124, cu126, cu128]
+        accelerator: [cpu, cu118, cu124] #, hip, cu124, cu126, cu128]
 
     steps:
       - name: Download all the dists

@@ -25,7 +25,7 @@ if os.getenv("ACCELERATOR", "").startswith("cu"):
     cuda_ver = os.getenv("ACCELERATOR", "")[2:4]
     _replace_name(f"openmm-torch-unofficial-cu{cuda_ver}")
 
-extra_compile_args = ['-std=c++17', '-D_GLIBCXX_USE_CXX11_ABI=0']
+extra_compile_args = ['-std=c++17', '-D_GLIBCXX_USE_CXX11_ABI=1']
 extra_link_args = []
 libraries = ['OpenMM', 'OpenMMTorch', 'c10', 'torch', 'torch_cpu', 'torch_python']
 extra_deps = []

@@ -31,7 +31,7 @@ elif [ "$ACCELERATOR" == "cu120" ]; then
     mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.0" /d/cuda
     # Create pip.ini file with PyTorch CUDA 12.6 index
     echo "[global]
-extra-index-url = https://download.pytorch.org/whl/cu124" > "C:\ProgramData\pip\pip.ini"
+extra-index-url = https://download.pytorch.org/whl/cu126" > "C:\ProgramData\pip\pip.ini"
 
     pip install openmm-unofficial-cu12
 elif [ "$ACCELERATOR" == "hip" ]; then
@@ -51,7 +51,7 @@ OPENCL_PATH="$(pwd)/OpenCL-SDK-v2024.10.24-Win-x64"
 
 ######################################
 # Install dependencies with pip
-pip install torch==2.6.0
+pip install torch==2.7.1
 PYTHONPREFIX=$(python -c 'import site; print(site.getsitepackages()[0])')
 SITE_PACKAGES="$PYTHONPREFIX/Lib/site-packages/"
 

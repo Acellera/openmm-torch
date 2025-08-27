@@ -32,7 +32,10 @@ extra_deps = []
 if os.environ.get("ACCELERATOR", "").startswith("cu"):
     libraries += ['c10_cuda', 'torch_cuda']
     cuda_ver = os.getenv("ACCELERATOR", "")[2:4]
-    extra_deps = [f'nvidia-cuda-runtime-cu{cuda_ver}']
+    if cuda_ver == '12':
+        extra_deps = ['nvidia-cuda-runtime-cu12<=12.4']
+    else:
+        extra_deps = ['nvidia-cuda-runtime-cu11']
 
 runtime_library_dirs = ["$ORIGIN/../openmm/lib", "$ORIGIN/../torch/lib"]
 

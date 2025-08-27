@@ -50,6 +50,8 @@ jobs:
 
       - name: Activate MSVC
         uses: ilammy/msvc-dev-cmd@v1
+        with:
+          vsversion: 2019
         if: matrix.os == 'windows-2022'
 
       - name: "Install dependencies with choco"

@@ -25,10 +25,10 @@ extra-index-url = https://download.pytorch.org/whl/cu118" > "C:\ProgramData\pip\
     pip install openmm-unofficial-cu11
 elif [ "$ACCELERATOR" == "cu120" ]; then
     curl --netrc-optional -L -nv -o cuda.exe https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/cuda_12.0.0_527.41_windows.exe
-    ./cuda.exe -s nvcc_12.0 nvrtc_12.0 nvrtc_dev_12.0 cudart_12.0 cufft_12.0 cufft_dev_12.0 cuda_profiler_api_12.0
+    ./cuda.exe -s nvcc_12.0 nvrtc_12.0 nvrtc_dev_12.0 cudart_12.0 cufft_12.0 cufft_dev_12.0 cuda_profiler_api_12.0 nvtx_12.0
     rm cuda.exe
     # Move CUDA folder to a path without spaces
-    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.0" /c/CUDA
+    mv "/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.0" /d/cuda
     # Create pip.ini file with PyTorch CUDA 12.6 index
     echo "[global]
 extra-index-url = https://download.pytorch.org/whl/cu126" > "C:\ProgramData\pip\pip.ini"
